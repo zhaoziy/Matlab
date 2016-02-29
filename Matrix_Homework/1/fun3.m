@@ -1,0 +1,34 @@
+function[x]=fun3(f)
+%弦截法
+clc;
+clear;
+syms x
+f=2*x^3-5*x^2-19*x+42;
+x0=50;
+x1=49;
+epsilon=0.00001;
+fvalue0=subs(f,x0);
+fvalue1=subs(f,x1);
+fvalue0=double(fvalue0);
+fvalue1=double(fvalue1);
+x2=x1-fvalue1*(x1-x0)/(fvalue1-fvalue0);
+x2=double(x2);
+reerr=2*abs((x2-x1)/(x2));
+p(1)=reerr
+n=1;
+while(reerr>epsilon)
+    x0=x1;
+    x1=x2;
+    fvalue0=fvalue1;
+    fvalue1=subs(f,x2);
+    fvalue1=double(fvalue1);
+    p(n)=reerr;
+    fprintf('%f , %f\n',x2,reerr)
+    n=n+1;
+    x2=x1-fvalue1*(x1-x0)/(fvalue1-fvalue0);
+    x2=double(x2);
+    reerr=2*abs((x2-x1)/(x2));
+end
+b=1:1:n-1;
+plot(b,p,'-*')
+fprintf('所用迭代次数:%d',n-1);
